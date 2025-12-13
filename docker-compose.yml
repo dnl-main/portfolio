@@ -1,12 +1,25 @@
 version: "3.9"
 
 services:
+
+  # 1. NGINX Service (Web Server) - Listens on 8001 and forwards requests to 'laravel'
+  nginx:
+    image: nginx:stable-alpine
+    container_name: nginx_proxy
+    ports:
+      - "8001:80"  # Map host port 8001 to Nginx's standard port 80
+    volumes:
+      - ./laravel:/var/www/html # Mount the code for Nginx to serve assets
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf # Add Nginx config file
+    depends_on:
+      - laravel
+
   laravel:
     build:
       context: ./laravel
     container_name: laravel_app
-    ports:
-      - "8001:8000"
+    # ports:
+    #   - "8001:8000"
     volumes:
       - ./laravel:/var/www/html
     environment:

@@ -14,7 +14,7 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("http://localhost:8000/api/users")
+    fetch("http://localhost:8001/api/users")
       .then(res => res.json())
       .then(data => {
         setUsers(data);
