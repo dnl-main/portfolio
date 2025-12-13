@@ -1,0 +1,48 @@
+version: "3.9"
+
+services:
+  laravel:
+    build:
+      context: ./laravel
+    container_name: laravel_app
+    ports:
+      - "8001:8000"
+    volumes:
+      - ./laravel:/var/www/html
+    environment:
+      - DB_HOST=db
+      - DB_PORT=3306
+      - DB_DATABASE=portfolio_db   # <--- FIX: Use the database name from the 'db' service
+      - DB_USERNAME=dnlsql         # <--- FIX: Use the custom user 'dnlsql'
+      - DB_PASSWORD=dnlsql         # <--- FIX: Use the custom password 'dnlsql'
+    depends_on:
+      - db
+
+  nextjs:
+    build:
+      context: ./next
+    container_name: nextjs_app
+    ports:
+      - "3001:3000"
+    volumes:
+      - ./next:/app
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:8001/api
+    depends_on:
+      - laravel
+
+  db:
+    image: mysql:8.0
+    container_name: mysql_db
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: portfolio_db
+      MYSQL_USER: dnlsql
+      MYSQL_PASSWORD: dnlsql
+    volumes:
+      - dbdata:/var/lib/mysql
+
+volumes:
+  dbdata:
