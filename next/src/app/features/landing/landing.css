@@ -1,0 +1,27 @@
+.landing {
+  /* max-width: 100vw; */
+  width: 100%;
+  background-color: var(--secondary-color);
+  font-family: var(--font-inter);
+}
+
+.landing-hero {
+  width: 100%;
+  height: 100vh;
+}
+
+.landing-projects {
+  width: 100%;
+  height: 100vh;
+}
+
+.landing-services {
+  width: 100%;
+  height: 100vh;
+}
+
+.landing-about {
+  width: 100%;
+  height: 100vh;
+}
+

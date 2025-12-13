@@ -1,0 +1,164 @@
+.hero {
+  /* background-color: darkblue;  */
+  width: 100%;
+  height: 100%;
+}
+.hero-box {
+  /* background-color: midnightblue;  */
+  width: 100%;
+  height: 100%;
+}
+.hero-box-in {
+  /* background-color: royalblue;  */
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 2vh;
+  padding: 2vh;
+  /* font-family: var(--font-inter); */
+}
+  .hero-nav {
+    /* background-color: darkslategray;  */
+    width: 100%;
+    height: 12vh;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0vh 12vh;
+  }
+    .hero-nav-logo {
+      /* background-color: slategray;  */
+      display: flex;
+      align-items: center;
+      gap: 2vh;
+      font-family: var(--font-accent-jost);
+      font-size: var(--font-size-16);
+      font-weight: var(--font-weight-semibold);
+      color: var(--primary-color);
+    }
+
+      .hero-nav-logo_img {
+        width: 6.4vh;
+        height: 6.4vh;
+        background-color: var(--white-color);
+        border-radius: 1.2vh;
+      }
+    .hero-nav-btn {
+      background-color: lightslategray; 
+      all: unset;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: var(--white-color);
+      font-size: var(--font-size-16);
+      font-weight: var(--font-weight-regular);
+      color: var(--black-color);
+      padding: 0.8vh 4vh;
+      border-radius: 500px;
+    }
+  .hero-main {
+    /* background-color: darkgreen;  */
+    /* background-color: var(--secondary-color); */
+    flex-grow: 1;
+    display: flex;
+  }
+    .hero-main-left {
+      /* background-color: forestgreen;  */
+      width: 52%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 8vh;
+      padding-left: 12vh;
+      padding-bottom: 6vh;
+    }
+      .hero-main-left-heading {
+        /* background-color: seagreen;  */
+        display: flex;
+        flex-direction: column;
+        gap: 4vh;
+      }
+        .hero-main-left-heading_status {
+          /* background-color: white;  */
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: max-content;
+          gap: 1vh;
+          padding: 0.8vh 3.2vh 0.8vh 1.6vh;
+          font-size: var(--font-size-16);
+          font-weight: var(--font-weight-regular);
+          color: var(--green-indicator);
+          border: 2px solid var(--green-indicator);
+          border-radius: 500px;
+        }
+        .hero-main-left-heading_header {
+          /* background-color: darkmagenta;  */
+          display: flex;
+          flex-direction: column;
+          letter-spacing: -4;
+          word-spacing: -6;
+          line-height: 1;
+          font-family: var(--font-accent-jost);
+          font-size: var(--font-size-60);
+          font-weight: var(--font-weight-semibold);
+          color: var(--black-color);
+        }
+
+          .hero-main-left-heading_header-next {
+            display: flex;
+            align-items: center;
+            gap: 1vh;
+          }
+            .hero-main-left-heading_header-next_img {
+              width: 12vh;
+              height: 12vh;
+              transform: rotate(-5deg);
+            }
+        .hero-main-left-heading_sub {
+          /* background-color: white;  */
+          display: flex;
+          flex-direction: column;
+          letter-spacing: -0.5;
+          /* word-spacing: -6; */
+          line-height: 1.4;
+          font-size: var(--font-size-16);
+          font-weight: var(--font-weight-regular);
+          color: var(--gray-color);
+        }
+      .hero-main-left_btn {
+        background-color: violet; 
+        all: unset;
+        width: 30vh;
+        background-color: var(--primary-color);
+        color: var(--white-color);
+        padding: 1.6vh 6vh;
+        text-align: center;
+        font-family: var(--font-accent);
+        font-size: var(--font-size-16);
+        font-weight: var(--font-weight-semibold);
+        border: none;
+        border-radius: 500px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        cursor: pointer;
+        transition: background-position 0.5s ease, transform 0.2s ease, box-shadow 0.2s ease;
+        
+      }
+        .hero-main-left_btn button {
+          }
+
+        .hero-main-left_btn:hover {
+          background-position: right center;
+          color: var(--white-color);
+          text-decoration: none;
+          transform: scale(1.03);
+          box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+        }
+
+    .hero-main-right {
+      /* background-color: lightgreen;  */
+      width: 48%;
+      height: 100%;
+    }

@@ -1,0 +1,110 @@
+@import "tailwindcss";
+/* html {
+  overflow-x: hidden; 
+} */
+html, body {
+  padding: 0;
+  margin: 0;
+}
+::before,
+::after {
+  box-sizing: border-box; 
+  border-width: 0;
+}
+:root {
+ 
+  font-family: 'Inter' system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  --font-geist-sans: "Inter", sans-serif; 
+  --font-geist-mono: monospace;
+  --font-inter: "Inter", system-ui, Avenir, Helvetica, Arial, sans-serif;
+  --font-bricolage-grotesque: "Bricolage Grotesque", serif;
+
+  --font-family: 'Inter' system-ui, Avenir, Helvetica, Arial, sans-serif;
+  --font-accent: "Bricolage Grotesque", serif;
+  --font-accent-jost: var(--font-accent-jost), serif;
+  
+  --font-weight-extralight: 200;
+  --font-weight-light: 300;
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --font-weight-extrabold: 800;
+  --font-weight-black: 900;
+
+  --font-size-4: 0.333rem;    /* mobile */
+  --font-size-8: 0.667rem;    /* mobile */
+  --font-size-10: 0.8rem;     /* mobile */
+  --font-size-11: 0.9rem;     /* mobile */
+  --font-size-12: 1rem;       /* 12px */
+  --font-size-13: 1.111rem;   /* mobile */
+
+  --font-size-16: 1.333rem;   /* 16px */
+  --font-size-20: 1.667rem;   /* 20px */
+  --font-size-24: 2rem;       /* 24px */
+  --font-size-28: 2.333rem;   /* 28px */
+  --font-size-32: 2.667rem;   /* 32px */
+  --font-size-36: 3rem;       /* 36px */
+  --font-size-40: 3.333rem;   /* 40px */
+  --font-size-44: 3.667rem;   /* 44px */
+  --font-size-48: 4rem;       /* 48px */
+  --font-size-52: 4.333rem;   /* 52px */
+  --font-size-56: 4.667rem;   /* 56px */
+  --font-size-60: 5rem;       /* 60px */
+  --font-size-64: 5.333rem;   /* 64px */
+  --font-size-68: 5.667rem;   /* 68px */
+  --font-size-72: 6rem;       /* 72px */
+  --font-size-76: 6.333rem;   /* 76px */
+  --font-size-80: 6.667rem;   /* 80px */
+
+  --icon-size-xs: 1.333rem;
+  --icon-size-sm: 1.667rem;
+  --icon-size-md: 2rem;
+  --icon-size-lg: 2.333rem;
+  --icon-size-xl: 2.667rem;
+
+  --background: var(--secondary-color);
+  --foreground: var(--black-color);
+
+  --primary-color: #545DFA;
+  --secondary-color: #F5FBFF;
+  --black-color: #14181f;
+  --white-color: #ffffff;
+  --gray-color: #76778B;
+
+  --red-indicator: #fa6464;
+  --green-indicator: #36c081;
+  --yellow-indicator: #ffdc6c;
+  --blue-indicator: #4c79d3;
+  --black-indicator: #14181f;
+
+  --gray-900: #2e2e2e; /* darkest */
+  --gray-700: #4a4a4a;
+  --gray-500: #6d6d6d; /* base */
+  --gray-300: #a0a0a0;
+  --gray-100: #d6d6d6; /* lightest */
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  /* --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono); */
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: var(--background);
+  font-family: var(--font-family)
+}
