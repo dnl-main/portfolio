@@ -1,49 +1,61 @@
 version: "3.9"
 
 services:
-
-  # 1. NGINX Service (Web Server) - Listens on 8001 and forwards requests to 'laravel'
+  # 1. NGINX Service (API Proxy)
+  # Acts as the entry point, listening publicly on port 8001 and forwarding to Laravel.
   nginx:
     image: nginx:stable-alpine
     container_name: nginx_proxy
     ports:
-      - "8001:80"  # Map host port 8001 to Nginx's standard port 80
+      - "8001:80"  # Expose NGINX on host port 8001
     volumes:
-      - ./laravel:/var/www/html # Mount the code for Nginx to serve assets
-      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf # Add Nginx config file
+      - ./laravel:/var/www/html
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf 
     depends_on:
       - laravel
 
+  # 2. LARAVEL PHP-FPM Service (The Backend Logic)
   laravel:
     build:
       context: ./laravel
     container_name: laravel_app
-    # ports:
-    #   - "8001:8000"
     volumes:
       - ./laravel:/var/www/html
     environment:
+      # --- Database Connection (Correctly uses the service name 'db') ---
       - DB_HOST=db
+      # - DB_HOST=127.0.0.1
       - DB_PORT=3306
-      - DB_DATABASE=portfolio_db   # <--- FIX: Use the database name from the 'db' service
-      - DB_USERNAME=dnlsql         # <--- FIX: Use the custom user 'dnlsql'
-      - DB_PASSWORD=dnlsql         # <--- FIX: Use the custom password 'dnlsql'
+      - DB_DATABASE=portfolio_db  
+      - DB_USERNAME=dnlsql         
+      - DB_PASSWORD=dnlsql        
+      
+      # --- Full-Stack Integration & Session/CORS Settings (Crucial) ---
+      # This is the public URL, needed by Laravel when generating full URLs.
+      - APP_URL=http://localhost:8001 
+      # Trust both the internal container name (nextjs:3000) and the external host access (localhost:3001)
+      - SANCTUM_STATEFUL_DOMAINS=nextjs:3000,localhost:3001
+      - SESSION_DOMAIN=localhost
+      - APP_DEBUG=true
     depends_on:
       - db
 
+  # 3. NEXT.JS Service (The Frontend Application)
   nextjs:
     build:
       context: ./next
     container_name: nextjs_app
     ports:
-      - "3001:3000"
+      - "3001:3000" # Expose Next.js on host port 3001
     volumes:
       - ./next:/app
     environment:
-      - NEXT_PUBLIC_API_URL=http://localhost:8001/api
+      # The frontend must point to the public API proxy address (NGINX on host port 8001)
+      - NEXT_PUBLIC_API_URL=http://localhost:8001/api 
     depends_on:
       - laravel
 
+  # 4. MySQL DB Service
   db:
     image: mysql:8.0
     container_name: mysql_db
@@ -59,3 +71,65 @@ services:
 
 volumes:
   dbdata:
+
+
+
+
+# version: "3.9"
+
+# services:
+#   nginx:
+#     image: nginx:stable-alpine
+#     container_name: nginx_proxy
+#     ports:
+#       - "8001:80"  
+#     volumes:
+#       - ./laravel:/var/www/html
+#       - ./nginx/default.conf:/etc/nginx/conf.d/default.conf 
+#     depends_on:
+#       - laravel
+
+#   laravel:
+#     build:
+#       context: ./laravel
+#     container_name: laravel_app
+#     volumes:
+#       - ./laravel:/var/www/html
+#     environment:
+#       - DB_HOST=db
+#       - DB_PORT=3306
+#       - DB_DATABASE=portfolio_db  
+#       - DB_USERNAME=dnlsql         
+#       - DB_PASSWORD=dnlsql        
+#       - MYSQL_CLIENT_CONNECT_ATTRS=ssl-mode=DISABLED
+#     depends_on:
+#       - db
+
+#   nextjs:
+#     build:
+#       context: ./next
+#     container_name: nextjs_app
+#     ports:
+#       - "3001:3000"
+#     volumes:
+#       - ./next:/app
+#     environment:
+#       - NEXT_PUBLIC_API_URL=http://localhost:8001/api
+#     depends_on:
+#       - laravel
+
+#   db:
+#     image: mysql:8.0
+#     container_name: mysql_db
+#     ports:
+#       - "3307:3306"
+#     environment:
+#       MYSQL_ROOT_PASSWORD: root
+#       MYSQL_DATABASE: portfolio_db
+#       MYSQL_USER: dnlsql
+#       MYSQL_PASSWORD: dnlsql
+#     volumes:
+#       - dbdata:/var/lib/mysql
+
+# volumes:
+#   dbdata:

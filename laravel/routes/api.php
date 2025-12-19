@@ -2,45 +2,46 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\UserController;
-
-// Route::get('/user', function (Request $request) {
-//     return $request->user();
-// })->middleware('auth:sanctum');
+use App\Http\Controllers\Api\AccountController;
+use App\Http\Controllers\Api\AuthController;
 
 
 
-Route::get('/users', [UserController::class, 'index']);
+/*
+|--------------------------------------------------------------------------
+| Public Routes
+|--------------------------------------------------------------------------
+*/
 
-// Route::get('/hello', function () {
-//     return response()->json([
-//         'message' => 'Hello from Laravel 👋'
-//     ]);
-// });
+// Auth Routes
+Route::post('/signup', [AccountController::class, 'store']);
+Route::post('/login', [AuthController::class, 'login']);
 
-// use Illuminate\Support\Facades\DB;
+// Explicitly handle GET on signup if needed
+Route::get('/signup', function () {
+    return response()->json(['message' => 'Method not allowed'], 405);
+});
 
-// Route::get('/db-test', function () {
-//     try {
-//         DB::connection()->getPdo();
-//         return response()->json([
-//             'status' => 'success',
-//             'message' => 'Database connected successfully ✅'
-//         ]);
-//     } catch (\Exception $e) {
-//         return response()->json([
-//             'status' => 'error',
-//             'message' => $e->getMessage()
-//         ], 500);
-//     }
-// });
+/*
+|--------------------------------------------------------------------------
+| Protected Routes (Requires Authentication)
+|--------------------------------------------------------------------------
+| These routes are wrapped in the 'auth:sanctum' middleware.
+| Sanctum will check for a valid session cookie from your Next.js app.
+*/
 
-// Route::get('/db-check-table', function () {
-//     $count = DB::table('migrations')->count();
+Route::middleware('auth:sanctum')->group(function () {
+    
+    // 1. Get current authenticated user (Vital for your RoleGuard)
+    Route::get('/user', function (Request $request) {
+        return $request->user();
+    });
 
-//     return response()->json([
-//         'migrations_count' => $count
-//     ]);
-// });
+    // 2. Logout
+    Route::post('/logout', [AuthController::class, 'logout']);
 
-
+    // 3. Protected Resource Routes
+    Route::get('/users', [AccountController::class, 'index']);
+    // Route::apiResource('accounts', AccountController::class);
+    
+});

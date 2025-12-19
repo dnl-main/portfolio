@@ -1,0 +1,618 @@
+-- phpMyAdmin SQL Dump
+-- version 5.2.1
+-- https://www.phpmyadmin.net/
+--
+-- Host: 127.0.0.1
+-- Generation Time: Dec 15, 2025 at 09:32 AM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.2.12
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Database: `testdb`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `account`
+--
+
+CREATE TABLE `account` (
+  `id` int(11) NOT NULL,
+  `first_name` varchar(100) DEFAULT NULL,
+  `middle_name` varchar(100) DEFAULT NULL,
+  `last_name` varchar(100) DEFAULT NULL,
+  `email` varchar(100) DEFAULT NULL,
+  `mobile_number` varchar(15) DEFAULT NULL,
+  `password` varchar(255) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `account_address`
+--
+
+CREATE TABLE `account_address` (
+  `account_id` int(11) NOT NULL,
+  `address_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `account_assignment`
+--
+
+CREATE TABLE `account_assignment` (
+  `account_id` int(11) NOT NULL,
+  `department_id` int(11) NOT NULL,
+  `position_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `account_role`
+--
+
+CREATE TABLE `account_role` (
+  `account_id` int(11) NOT NULL,
+  `role_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `address`
+--
+
+CREATE TABLE `address` (
+  `id` int(11) NOT NULL,
+  `zip_code` varchar(10) DEFAULT NULL,
+  `region` varchar(100) DEFAULT NULL,
+  `province` varchar(100) DEFAULT NULL,
+  `city` varchar(100) DEFAULT NULL,
+  `barangay` varchar(100) DEFAULT NULL,
+  `street` varchar(100) DEFAULT NULL,
+  `building_number` varchar(100) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `admin_profile`
+--
+
+CREATE TABLE `admin_profile` (
+  `account_id` int(11) NOT NULL,
+  `department_id` int(11) DEFAULT NULL,
+  `position_id` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `appointment`
+--
+
+CREATE TABLE `appointment` (
+  `id` int(11) NOT NULL,
+  `date` date DEFAULT NULL,
+  `start_time` time DEFAULT NULL,
+  `end_time` time DEFAULT NULL,
+  `purpose` varchar(100) DEFAULT NULL,
+  `status` enum('pending','confirmed','rejected','expired') DEFAULT 'pending',
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `appointment_participant`
+--
+
+CREATE TABLE `appointment_participant` (
+  `appointment_id` int(11) NOT NULL,
+  `account_id` int(11) NOT NULL,
+  `role_id` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `certificate`
+--
+
+CREATE TABLE `certificate` (
+  `id` int(11) NOT NULL,
+  `certificate_name` varchar(255) DEFAULT NULL,
+  `file_path` varchar(255) DEFAULT NULL,
+  `expiration_date` date DEFAULT NULL,
+  `status` varchar(50) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `account_id` int(11) DEFAULT NULL,
+  `certificate_subtype_id` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `certificate_subtype`
+--
+
+CREATE TABLE `certificate_subtype` (
+  `id` int(11) NOT NULL,
+  `certificate_subtype_name` varchar(100) DEFAULT NULL,
+  `certificate_type_id` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `certificate_subtype`
+--
+
+INSERT INTO `certificate_subtype` (`id`, `certificate_subtype_name`, `certificate_type_id`) VALUES
+(1, 'HEALTH CHECK', 1),
+(2, 'VACCINATION', 1),
+(3, 'MEDICAL CERTIFICATE', 1),
+(4, 'PRE-EMPLOYMENT MEDICAL EXAMINATION', 1),
+(5, 'FITNESS FOR SEA SERVICE', 1),
+(6, 'HEALTH INSURANCE', 1),
+(7, 'WORKSHOP', 2),
+(8, 'CERTIFICATION', 2),
+(9, 'SEAMAN TRAINING I', 2),
+(10, 'LEADERSHIP TRAINING I', 2),
+(11, 'SEAMAN TRAINING II', 2),
+(12, 'LEADERSHIP TRAINING II', 2),
+(13, 'LEADERSHIP TRAINING III', 2),
+(14, 'SAFETY CERTIFECATES / BASIC SAFETY TRAINING & CROWD MANAGEMENT', 2),
+(15, 'DECK CADET', 2),
+(16, ' ENGINE CADET TRAINING', 2),
+(17, 'BRM (BRIDGE RESOURCE MANAGEMENT)', 2),
+(18, 'ERM (ENGINE ROOM RESOURCE MANAGEMENT)', 2),
+(19, 'RADAR / ARPA / ECDIS', 2),
+(20, 'LNG CARRIER OPERATIONS', 2),
+(21, 'OIL TANKER FAMILIARIZATION', 2),
+(22, 'LEADERSHIP & TEAMWORK', 2),
+(23, 'CULTURAL BRIEFING', 3),
+(24, 'FINANCIAL LITERACY', 3),
+(25, 'SEAFARER SAFETY AWARENESS', 3),
+(26, 'SHIPBOARD EMERGENCY PROCEDURES', 3),
+(27, 'SEXUAL HARASSMENT AWARENESS', 3),
+(28, 'COVID PROTOCOL PROTECTION', 3),
+(29, 'PASSPORT', 4),
+(30, 'ID CARD', 4),
+(31, 'CONTRACT', 4),
+(32, 'PRE-EMPLOYMENT ORIENTATION SEMINAR (PEOS)', 4),
+(33, 'SEAMAN BOOK', 4),
+(34, 'CONTRACT OF EMPLOYMENT', 4),
+(35, 'CREW ID-CARD', 4),
+(36, 'C1/D VISA', 4),
+(37, 'CRIMINAL RECORD CERTIFICATE', 4),
+(38, 'SEA SERVICE RECORD', 4),
+(39, 'INTERNATIONAL SHIP SAFETY EQUIPMENT CERTIFICATE', 5),
+(40, 'MINIMUM SAFE MANNING CERTIFICATE', 5),
+(41, 'INTERNATIONAL SHIP CONSTRUCTION CERTIFICATE', 5),
+(42, 'PASSENGER SHIP SAFETY CERTIFICATE', 5),
+(43, 'CARGO SHIP SAFETY CERTIFICATE', 5),
+(44, 'CARGO SHIP SAFETY CONSTRUCTION CERTIFICATE', 5),
+(45, 'CARGO SHIP SAFETY EQUIPMENT CERTIFICATE', 5),
+(46, 'CARGO SHIP SAFETY RADIO CERTIFICATE', 5),
+(47, 'INTERNATIONAL TONNAGE CERTIFICATE', 5),
+(48, 'INTERNATIONAL LOAD LINE CERTIFICATE', 5),
+(49, 'SAFETY MANAGEMENT CERTIFICATE', 5),
+(50, 'SHIP SECURITY CERTIFICATE', 5),
+(51, 'INTERNATIONAL OIL POLLUTION PREVENTION CERTIFICATE', 5),
+(52, 'INTERNATIONAL SEWAGE POLLUTION PREVENTION CERTIFICATE', 5),
+(53, 'INTERNATIONAL AIR POLLUTION PREVENTION CERTIFICATE', 5),
+(54, 'PST (PERSONAL SURVIVAL TECHNIQUES)', 5),
+(55, 'FPFF (FIRE PREVENTION AND FIRE FIGHTING)', 5),
+(56, 'EFA (ELEMENTARY FIRST AID)', 5),
+(57, 'PSSR (PERSONAL SAFETY AND SOCIAL RESPONSIBILITY)', 5),
+(58, 'SECURITY AWARENESS', 5),
+(59, 'ADVANCED FIRE FIGHTING', 5),
+(60, 'PSCRB (RESCUE BOATS)', 5),
+(61, 'ENCLOSED SPACE RESCUE', 5),
+(62, 'HUET (HELICOPTER ESCAPE)', 5),
+(63, 'STCW BASIC SAFETY TRAINING', 6),
+(64, 'STCW PROFICIENCY IN SURVIVAL CRAFT AND RESCUE BOATS', 6),
+(65, 'STCW PROFICIENCY IN FAST RESCUE BOATS', 6),
+(66, 'STCW PROFICIENCY IN DESIGNATED SECURITY DUTIES', 6),
+(67, 'STCW PROFICIENCY IN SECURITY AWARENESS', 6),
+(68, 'STCW PROFICIENCY IN CRISIS MANAGEMENT AND HUMAN BEHAVIOR', 6),
+(69, 'STCW PROFICIENCY IN ADVANCED FIRE FIGHTING', 6),
+(70, 'STCW PROFICIENCY IN MEDICAL FIRST AID', 6),
+(71, 'ABLE SEAMAN — UNLIMITED', 7),
+(72, 'ABLE SEAMAN — LIMITED', 7),
+(73, 'ABLE SEAMAN', 7),
+(74, 'STCW BASIC SAFETY (PST, FPFF, EFA, PSSR)', 7),
+(75, 'WATCHKEEPING CERTIFICATE', 7),
+(76, 'CROWD MANAGEMENT & CRISIS CONTROL', 7),
+(77, 'RADAR NAVIGATION & COLLISION AVOIDANCE', 7),
+(78, 'SHIP SECURITY AWARENESS', 7),
+(79, 'OTHERS', 7);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `certificate_type`
+--
+
+CREATE TABLE `certificate_type` (
+  `id` int(11) NOT NULL,
+  `certificate_type_name` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `certificate_type`
+--
+
+INSERT INTO `certificate_type` (`id`, `certificate_type_name`) VALUES
+(1, 'MEDICAL'),
+(2, 'TRAINING'),
+(3, 'PDOS'),
+(4, 'EMPLOYMENT DOCUMENT'),
+(5, 'SOLAS'),
+(6, 'STCW CERTIFICATION'),
+(7, 'SEAMAN PASSPORT');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `department`
+--
+
+CREATE TABLE `department` (
+  `id` int(11) NOT NULL,
+  `department_name` varchar(100) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `department`
+--
+
+INSERT INTO `department` (`id`, `department_name`) VALUES
+(1, 'RECRUITMENT'),
+(2, 'CREWING (MDM FLEET)'),
+(3, 'CREWING (MTM FLEET)'),
+(4, 'CREWING (MGM FLEET)'),
+(5, 'ADMINISTRATION'),
+(6, 'TRAINING'),
+(7, 'MEDICAL'),
+(8, 'SUPPORT'),
+(9, 'ACCOUNTING'),
+(10, 'AUDITOR');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `position`
+--
+
+CREATE TABLE `position` (
+  `id` int(11) NOT NULL,
+  `position_name` varchar(50) DEFAULT NULL,
+  `department_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `position`
+--
+
+INSERT INTO `position` (`id`, `position_name`, `department_id`) VALUES
+(1, 'SENIOR RECRUITMENT OFFICER', 1),
+(2, 'RECRUITMENT OFFICER', 1),
+(3, 'RECRUITMENT ASSISTANT', 1),
+(4, 'FLEET CREW MANAGER', 2),
+(5, 'CREW OPERATOR', 2),
+(6, 'FLEET CREW MANAGER', 3),
+(7, 'SENIOR CREW OPERATOR', 3),
+(8, 'CREW OPERATOR', 3),
+(9, 'FLEET CREW MANAGER', 4),
+(10, 'SENIOR CREW OPERATOR', 4),
+(11, 'CREW OPERATOR', 4),
+(12, 'ADMINISTRATIVE MANAGER', 5),
+(13, 'ADMINISTRATIVE OFFICER', 5),
+(14, 'LIASON OFFICER', 5),
+(15, 'CREW OPERATOR', 5),
+(16, 'TRAINING MANAGER', 6),
+(17, 'TRAINING AND CAREER DEVELOPMENT OFFIVER', 6),
+(18, 'TRAINING OFFICER', 6),
+(19, 'FLEET MEDICAL ADVISOR', 7),
+(20, 'MEDICAL COORDINATOR', 7),
+(21, 'DEPUTY DPO', 8),
+(22, 'IT OFFICER', 8),
+(23, 'CHIEF ACCOUNTING OFFICER', 9),
+(24, 'AUDIT ASSISTANT', 9),
+(25, 'ALLOTMENT OFFICER', 9),
+(26, 'DISTRIBUTEMENT OFFICER', 9),
+(27, 'BILLING OFFICER', 9),
+(28, 'PAYROLL OFFICER', 9),
+(29, 'GENERAL ACCOUNTANT', 9),
+(30, 'INTERNAL AUDITOR', 10);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `role`
+--
+
+CREATE TABLE `role` (
+  `id` int(11) NOT NULL,
+  `role_name` varchar(50) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `role`
+--
+
+INSERT INTO `role` (`id`, `role_name`) VALUES
+(2, 'admin'),
+(3, 'superadmin'),
+(1, 'user');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `user_profile`
+--
+
+CREATE TABLE `user_profile` (
+  `account_id` int(11) NOT NULL,
+  `gender` varchar(20) DEFAULT NULL,
+  `civil_status` varchar(50) DEFAULT NULL,
+  `birthday` date DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `account`
+--
+ALTER TABLE `account`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `email` (`email`);
+
+--
+-- Indexes for table `account_address`
+--
+ALTER TABLE `account_address`
+  ADD PRIMARY KEY (`account_id`,`address_id`),
+  ADD KEY `address_id` (`address_id`);
+
+--
+-- Indexes for table `account_assignment`
+--
+ALTER TABLE `account_assignment`
+  ADD PRIMARY KEY (`account_id`,`department_id`,`position_id`),
+  ADD KEY `department_id` (`department_id`),
+  ADD KEY `position_id` (`position_id`);
+
+--
+-- Indexes for table `account_role`
+--
+ALTER TABLE `account_role`
+  ADD PRIMARY KEY (`account_id`,`role_id`),
+  ADD KEY `role_id` (`role_id`);
+
+--
+-- Indexes for table `address`
+--
+ALTER TABLE `address`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `admin_profile`
+--
+ALTER TABLE `admin_profile`
+  ADD PRIMARY KEY (`account_id`),
+  ADD KEY `department_id` (`department_id`),
+  ADD KEY `position_id` (`position_id`);
+
+--
+-- Indexes for table `appointment`
+--
+ALTER TABLE `appointment`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `idx_status` (`status`);
+
+--
+-- Indexes for table `appointment_participant`
+--
+ALTER TABLE `appointment_participant`
+  ADD PRIMARY KEY (`appointment_id`,`account_id`),
+  ADD KEY `account_id` (`account_id`),
+  ADD KEY `role_id` (`role_id`);
+
+--
+-- Indexes for table `certificate`
+--
+ALTER TABLE `certificate`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `account_id` (`account_id`),
+  ADD KEY `certificate_subtype_id` (`certificate_subtype_id`);
+
+--
+-- Indexes for table `certificate_subtype`
+--
+ALTER TABLE `certificate_subtype`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `certificate_type_id` (`certificate_type_id`);
+
+--
+-- Indexes for table `certificate_type`
+--
+ALTER TABLE `certificate_type`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `department`
+--
+ALTER TABLE `department`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `position`
+--
+ALTER TABLE `position`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_position_department` (`department_id`);
+
+--
+-- Indexes for table `role`
+--
+ALTER TABLE `role`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `name` (`role_name`);
+
+--
+-- Indexes for table `user_profile`
+--
+ALTER TABLE `user_profile`
+  ADD PRIMARY KEY (`account_id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `account`
+--
+ALTER TABLE `account`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `address`
+--
+ALTER TABLE `address`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `appointment`
+--
+ALTER TABLE `appointment`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `certificate`
+--
+ALTER TABLE `certificate`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `certificate_subtype`
+--
+ALTER TABLE `certificate_subtype`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=80;
+
+--
+-- AUTO_INCREMENT for table `certificate_type`
+--
+ALTER TABLE `certificate_type`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- AUTO_INCREMENT for table `department`
+--
+ALTER TABLE `department`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
+-- AUTO_INCREMENT for table `position`
+--
+ALTER TABLE `position`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+
+--
+-- AUTO_INCREMENT for table `role`
+--
+ALTER TABLE `role`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `account_address`
+--
+ALTER TABLE `account_address`
+  ADD CONSTRAINT `account_address_ibfk_1` FOREIGN KEY (`account_id`) REFERENCES `account` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `account_address_ibfk_2` FOREIGN KEY (`address_id`) REFERENCES `address` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `account_assignment`
+--
+ALTER TABLE `account_assignment`
+  ADD CONSTRAINT `account_assignment_ibfk_1` FOREIGN KEY (`account_id`) REFERENCES `account` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `account_assignment_ibfk_2` FOREIGN KEY (`department_id`) REFERENCES `department` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `account_assignment_ibfk_3` FOREIGN KEY (`position_id`) REFERENCES `position` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `account_role`
+--
+ALTER TABLE `account_role`
+  ADD CONSTRAINT `account_role_ibfk_1` FOREIGN KEY (`account_id`) REFERENCES `account` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `account_role_ibfk_2` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `admin_profile`
+--
+ALTER TABLE `admin_profile`
+  ADD CONSTRAINT `admin_profile_ibfk_1` FOREIGN KEY (`account_id`) REFERENCES `account` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `admin_profile_ibfk_2` FOREIGN KEY (`department_id`) REFERENCES `department` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `admin_profile_ibfk_4` FOREIGN KEY (`position_id`) REFERENCES `position` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `appointment_participant`
+--
+ALTER TABLE `appointment_participant`
+  ADD CONSTRAINT `appointment_participant_ibfk_1` FOREIGN KEY (`appointment_id`) REFERENCES `appointment` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `appointment_participant_ibfk_2` FOREIGN KEY (`account_id`) REFERENCES `account` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `appointment_participant_ibfk_3` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`) ON DELETE SET NULL;
+
+--
+-- Constraints for table `certificate`
+--
+ALTER TABLE `certificate`
+  ADD CONSTRAINT `certificate_ibfk_1` FOREIGN KEY (`account_id`) REFERENCES `account` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `certificate_ibfk_2` FOREIGN KEY (`certificate_subtype_id`) REFERENCES `certificate_subtype` (`id`) ON DELETE SET NULL;
+
+--
+-- Constraints for table `certificate_subtype`
+--
+ALTER TABLE `certificate_subtype`
+  ADD CONSTRAINT `certificate_subtype_ibfk_1` FOREIGN KEY (`certificate_type_id`) REFERENCES `certificate_type` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `position`
+--
+ALTER TABLE `position`
+  ADD CONSTRAINT `fk_position_department` FOREIGN KEY (`department_id`) REFERENCES `department` (`id`) ON UPDATE CASCADE;
+
+--
+-- Constraints for table `user_profile`
+--
+ALTER TABLE `user_profile`
+  ADD CONSTRAINT `user_profile_ibfk_1` FOREIGN KEY (`account_id`) REFERENCES `account` (`id`) ON DELETE CASCADE;
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

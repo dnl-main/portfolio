@@ -1,11 +1,10 @@
 // app/layout.tsx
 
 import type { Metadata } from "next";
-// 💡 MODIFIED: Added Jost to the Google Fonts import
 import { Geist, Geist_Mono, Inter, Bricolage_Grotesque, Jost } from "next/font/google";
 import "../styles/globals.css";
+import { Providers } from "../lib/providers";
 
-// ❌ Removed: import localFont from "next/font/local";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -20,25 +19,22 @@ const geistMono = Geist_Mono({
 // Configure Inter
 const inter = Inter({
   subsets: ["latin"],
-  variable: "--font-inter", // Define a CSS variable for Inter
+  variable: "--font-inter", 
   display: "swap",
 });
 
 // Configure Bricolage Grotesque
 const bricolageGrotesque = Bricolage_Grotesque({
   subsets: ["latin"],
-  variable: "--font-bricolage-grotesque", // Define a CSS variable for Bricolage Grotesque
+  variable: "--font-bricolage-grotesque", 
   display: "swap",
 });
 
-// 💡 NEW: Configure Jost for your accent font
 const jost = Jost({
   subsets: ["latin"],
-  variable: "--font-accent-jost", // Use a descriptive variable name
+  variable: "--font-accent-jost", 
   display: "swap",
 });
-
-// ❌ Removed the radnikaNext localFont block
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -53,10 +49,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        // 💡 MODIFIED: Replaced radnikaNext.variable with jost.variable
         className={`${geistSans.variable} ${geistMono.variable} ${inter.variable} ${bricolageGrotesque.variable} ${jost.variable} antialiased`}
       >
-        {children}
+        <Providers>
+          {children}
+        </Providers>
       </body>
     </html>
   );
