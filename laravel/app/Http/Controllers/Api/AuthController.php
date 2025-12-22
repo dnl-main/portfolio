@@ -29,14 +29,14 @@ class AuthController extends Controller
             // 2. CRITICAL: Regenerate session to prevent fixation attacks
             $request->session()->regenerate();
 
-            $user = Auth::user();
+            $account = Auth::user();
 
             return response()->json([
                 'message' => 'Login successful',
-                'user' => [
-                    'id'    => $user->id,
-                    'email' => $user->email,
-                    'role'  => $user->role, // Uses the getRoleAttribute from your Account model
+                'account' => [
+                    'id'    => $account->id,
+                    'email' => $account->email,
+                    'role'  => $account->role, // Uses the getRoleAttribute from your Account model
                 ],
             ], 200);
         }

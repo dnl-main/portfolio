@@ -33,7 +33,7 @@ Route::get('/signup', function () {
 Route::middleware('auth:sanctum')->group(function () {
     
     // 1. Get current authenticated user (Vital for your RoleGuard)
-    Route::get('/user', function (Request $request) {
+    Route::get('/client', function (Request $request) {
         return $request->user();
     });
 
@@ -41,7 +41,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
 
     // 3. Protected Resource Routes
-    Route::get('/users', [AccountController::class, 'index']);
+    Route::get('/accounts', [AccountController::class, 'index']);
     // Route::apiResource('accounts', AccountController::class);
     
 });

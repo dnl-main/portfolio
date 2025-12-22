@@ -17,8 +17,8 @@ class AccountController extends Controller
     {
         try {
             // This calls the scope we just added
-            $users = Account::forApiIndex()->get();
-            return response()->json($users, 200);
+            $accounts = Account::forApiIndex()->get();
+            return response()->json($accounts, 200);
         } catch (\Exception $e) {
             return response()->json([
                 'message' => 'Error retrieving users',
@@ -47,11 +47,11 @@ class AccountController extends Controller
 
         try {
             // Model hashes password and assigns virtual role via email logic
-            $user = Account::signUp($request->only(['email', 'password']));
+            $accounts = Account::signUp($request->only(['email', 'password']));
 
             return response()->json([
                 'message' => 'Account created successfully!',
-                'user'    => $user // This will now include 'role' thanks to $appends
+                'account'    => $accounts // This will now include 'role' thanks to $appends
             ], 201);
 
         } catch (\Exception $e) {
